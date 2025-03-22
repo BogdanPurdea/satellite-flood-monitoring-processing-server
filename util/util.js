@@ -9,4 +9,4 @@ function generate_rectangle(top_left, bottom_right)
     return [top_left, [top_left[0], bottom_right[1]], bottom_right, [bottom_right[0], top_left[1]]];
 }
 
-module.exports = {generate_rectangle};
+export default {generate_rectangle};

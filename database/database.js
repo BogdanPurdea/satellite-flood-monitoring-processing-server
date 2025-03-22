@@ -15,4 +15,4 @@ function connect_db(connection_string)
     return pg_client;
 }
 
-module.exports = connect_db;
+module.exports = {connect_db};

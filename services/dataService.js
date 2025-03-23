@@ -1,5 +1,5 @@
-const { fetchFromDatabase, insertData } = require('./external/dataRepository');
-const { fetchFromFastAPI } = require('./external/apiClient');
+const { fetchFromDatabase, insertData } = require('../database/dataRepository');
+const { fetchFromFastAPI } = require('../api/apiClient');
 
 async function fetchNDWI(start_date, end_date, min_lon, min_lat, max_lon, max_lat, api_endpoint) {
     // Try fetching from Supabase first

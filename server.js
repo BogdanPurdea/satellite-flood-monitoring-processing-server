@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const mainController = require('./src/controllers/mainController');
-const config = require('./src/config');
+const mainController = require('./controllers/mainController');
+const config = require('./config');
 
 // Initialize Express
 const app = express();

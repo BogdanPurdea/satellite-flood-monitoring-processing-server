@@ -1,4 +1,4 @@
-const config = require('../config/index.js');
+const config = require('../config');
 const fetchNDWI = require('../services/dataService.js');
 
 const getNDWIData = async (req, res) => {

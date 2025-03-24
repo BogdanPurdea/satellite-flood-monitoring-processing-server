@@ -1,4 +1,4 @@
-const { insertData } = require('../database/dataRepository');
+const { insertData } = require('./dataRepository');
 const { fetchNDWI } = require('./dataService');
 
 module.exports = {

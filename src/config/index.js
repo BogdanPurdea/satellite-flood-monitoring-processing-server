@@ -1,5 +1,5 @@
 require('dotenv').config();
-const supabase = require('../database/init_database');
+const supabase = require('./init_database');
 
 const config = {
     port: process.env.PORT || 3000,

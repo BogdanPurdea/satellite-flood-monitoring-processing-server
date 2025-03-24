@@ -2,7 +2,6 @@ const connect_db = require("./database/database").default;
 const api = require("./api/api_request").default;
 const util = require("./util/util").default;
 const areas = require("./geography/areas").default;
-const server = require("./server/server").default;
 
 function main()
 {

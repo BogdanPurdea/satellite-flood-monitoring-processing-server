@@ -1,5 +1,5 @@
-const config = require('../config');
-const { convertToWKT } = require('../util/geo').default;
+const config = require('../../config');
+const { convertToWKT } = require('../../utils/geo');
 
 async function fetchFromDatabase(start_date, end_date, min_lon, min_lat, max_lon, max_lat) {
     const { data, error } = await config.supabase.client.rpc("get_data", {

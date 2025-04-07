@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 
 // NDWI Route
 app.post("/ndwi", mainController.getNDWIData);
+app.post("/ndwi-polygon", mainController.getNDWIPolygonData);
 
 // Start Server
 app.listen(config.port, () => {

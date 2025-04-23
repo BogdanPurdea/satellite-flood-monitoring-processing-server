@@ -18,13 +18,15 @@ async function fetchFromFastAPI(start_date, end_date, coordinates, api_endpoint)
             start_date,
             end_date,
             coordinates: polygonCoordinates,
-            vh_threshold: 1.25,
-            ndwi_threshold: 0
+            vh_threshold: api_endpoint.includes('vh') ? -20 : undefined,
+            ndwi_threshold: api_endpoint.includes('ndwi') ? 0.3 : undefined,
+            mndwi_threshold: api_endpoint.includes('mndwi') ? 0.2 : undefined
         })
     });
 
     if (!fastApiResponse.ok) {
-        throw new Error("Failed to fetch NDWI data from FastAPI");
+        const error = await fastApiResponse.text();
+        throw new Error(`FastAPI request failed: ${error}`);
     }
 
     return await fastApiResponse.json();

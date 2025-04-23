@@ -11,7 +11,18 @@ function getBoundingBox(coordinates) {
 }
 
 function convertToWKT(coordinates) {
-    return `POLYGON((${coordinates[0].map(coord => coord.join(" ")).join(", ")}))`;
+    // If coordinates is a simple array of coordinates (grid cell case)
+    if (Array.isArray(coordinates) && !Array.isArray(coordinates[0][0])) {
+        // Ensure the polygon is closed by adding the first coordinate at the end if needed
+        const coords = [...coordinates];
+        if (coords[0][0] !== coords[coords.length - 1][0] || coords[0][1] !== coords[coords.length - 1][1]) {
+            coords.push(coords[0]);
+        }
+        return `POLYGON((${coords.map(coord => `${coord[0]} ${coord[1]}`).join(", ")}))`;
+    }
+    
+    // Handle nested arrays (regular polygon case)
+    return `POLYGON((${coordinates[0].map(coord => `${coord[0]} ${coord[1]}`).join(", ")}))`;
 }
 
 module.exports = { getBoundingBox, convertToWKT };

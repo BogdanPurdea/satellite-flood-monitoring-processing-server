@@ -1,4 +1,4 @@
-const { fetchFromDatabase, insertData } = require('./external/dataRepository');
+const { fetchFromDatabase, insertData, insertGridData } = require('./external/dataRepository');
 const { fetchFromFastAPI } = require('./external/apiClient');
 const { getBoundingBox } = require('../utils/geo');
 
@@ -48,4 +48,29 @@ async function fetchPolygonNDWI(start_date, end_date, coordinates, api_endpoint)
     return apiData;
 }
 
-module.exports = { fetchNDWI, fetchPolygonNDWI };
+async function fetchGridData(start_date, end_date, coordinates, api_endpoint, water_index) {
+    // Try fetching from Supabase first
+    const dbData = await fetchFromDatabase(start_date, end_date, coordinates[0][0], coordinates[0][1], 
+                                        coordinates[2][0], coordinates[2][1], true, water_index);
+    
+    if (dbData) {
+        return dbData;
+    }
+
+    // If no data in database, fetch from FastAPI
+    console.log(`⚠️  Grid data not found in Supabase. Fetching ${water_index} from FastAPI...`);
+    const apiData = await fetchFromFastAPI(start_date, end_date, coordinates, api_endpoint);
+    
+    // Store API data if it was successfully retrieved
+    if (apiData.properties?.water_index) {
+        await insertGridData(apiData);
+    }
+
+    return apiData;
+}
+
+module.exports = { 
+    fetchNDWI, 
+    fetchPolygonNDWI,
+    fetchGridData 
+};

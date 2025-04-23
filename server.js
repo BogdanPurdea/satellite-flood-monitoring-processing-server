@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const mainController = require('./src/controllers/mainController');
+const dataController = require('./src/controllers/dataController');
+const floodMonitoringController = require('./src/controllers/floodMonitoringController');
 const config = require('./src/config');
 
 // Initialize Express
@@ -13,9 +14,14 @@ app.get('/', (req, res) => {
     res.send('Flood Detection API is running...');
 });
 
-// NDWI Route
-app.post("/ndwi", mainController.getNDWIData);
-app.post("/ndwi-polygon", mainController.getNDWIPolygonData);
+// Data Routes
+app.post("/ndwi", dataController.getNDWIData);
+app.post("/ndwi-polygon", dataController.getNDWIPolygonData);
+app.post("/grid-ndwi", dataController.getGridNDWI);
+app.post("/grid-mndwi", dataController.getGridMNDWI);
+
+// Flood Monitoring Routes
+app.post("/monitor-flood-risk", floodMonitoringController.monitorFloodRisk);
 
 // Start Server
 app.listen(config.port, () => {

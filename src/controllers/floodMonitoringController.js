@@ -40,13 +40,9 @@ const monitorFloodRisk = async (req, res) => {
         // Analyze the change in water coverage
         const analysis = analyzeWaterCoverageChange(previousMonthData, currentMonthData);
 
-        // Calculate the coverage increase
-        const coverageIncrease = analysis.secondPeriodCoverage - analysis.firstPeriodCoverage;
-        const coverageIncreasePercent = (coverageIncrease / analysis.firstPeriodCoverage) * 100;
-
-        // Send alert if water coverage increased beyond threshold
-        if (coverageIncreasePercent >= alertThreshold) {
-            await sendFloodAlert(coordinates, coverageIncreasePercent);
+        // Send alert if absolute change exceeds threshold
+        if (analysis.absoluteChange >= alertThreshold) {
+            await sendFloodAlert(coordinates, analysis.absoluteChange);
         }
 
         res.json({
@@ -54,18 +50,18 @@ const monitorFloodRisk = async (req, res) => {
             data: {
                 previousPeriodCoverage: analysis.firstPeriodCoverage,
                 currentPeriodCoverage: analysis.secondPeriodCoverage,
-                coverageChange: coverageIncreasePercent,
-                isIncrease: coverageIncreasePercent > 0,
-                alertSent: coverageIncreasePercent >= alertThreshold,
+                absoluteChange: analysis.absoluteChange,
+                isIncrease: analysis.absoluteChange > 0,
+                alertSent: analysis.absoluteChange >= alertThreshold,
                 alertThreshold,
                 periods: {
                     previous: {
                         start: previousPeriodStart,
-                        end: previousPeriodEnd
+                        end: previousPeriodEnd,
                     },
                     current: {
                         start: currentPeriodStart,
-                        end: currentPeriodEnd
+                        end: currentPeriodEnd,
                     }
                 }
             }
